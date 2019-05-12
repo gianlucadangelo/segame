@@ -1,3 +1,4 @@
+package game;
 
 abstract class Spieler {
 	
