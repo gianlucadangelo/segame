@@ -20,34 +20,32 @@ public class Spielfeld {
 
 	@Override
 	public String toString() {
-		return "Oben \n " + "|"+spielfeld[0][0] +"|"+ spielfeld[0][1] +"|"+ spielfeld[0][2] +"|"+ spielfeld[0][3] + "|"+spielfeld[0][4]
-				+ "|"+spielfeld[0][5] + "|"+spielfeld[0][6] + "\n Unten \n" +"|"+ spielfeld[1][0] +"|"+ spielfeld[1][1]
-				+"|"+ spielfeld[1][2] + "|"+spielfeld[1][3] + "|"+spielfeld[1][4] + "|"+spielfeld[1][5] +"|"+ spielfeld[1][6];
+		return "Oben \n " + "|" + spielfeld[0][0] + "|" + spielfeld[0][1] + "|" + spielfeld[0][2] + "|"
+				+ spielfeld[0][3] + "|" + spielfeld[0][4] + "|" + spielfeld[0][5] + "|" + spielfeld[0][6]
+				+ "\n Unten \n" + "|" + spielfeld[1][0] + "|" + spielfeld[1][1] + "|" + spielfeld[1][2] + "|"
+				+ spielfeld[1][3] + "|" + spielfeld[1][4] + "|" + spielfeld[1][5] + "|" + spielfeld[1][6];
 
 	}
 
-	public void ziehe(int reihe, int spalte) {
-		System.out.println(this.toString());
+	public void ziehe(int reihe, int spalte, Spieler akt) {
 		int steine = spielfeld[reihe][spalte];
 		spielfeld[reihe][spalte] = 0;
 		// Schau ob wir oben oder unten sind
 		if (reihe == 0) {
 
-				oben(reihe, spalte - 1, steine);
-		
+			oben(reihe, spalte - 1, steine, akt);
+
 		} else {
 			// Wir sind unten
-				unten(reihe, spalte + 1, steine);
-			
-		}
+			unten(reihe, spalte + 1, steine, akt);
 
+		}
 
 	}
 
-
-
-	private void unten(int reihe, int spalte, int steine) {
-		// 1 0 13 Steine [[6, 6, 6, 0, 5, 5, 5], [6, 5, 0, 5, 5, 5, 5]] -- [6, 0, 0, 5, 5, 5, 5]
+	private void unten(int reihe, int spalte, int steine, Spieler akt) {
+		// 1 0 13 Steine [[6, 6, 6, 0, 5, 5, 5], [6, 5, 0, 5, 5, 5, 5]] -- [6, 0, 0, 5,
+		// 5, 5, 5]
 		// [[7, 7, 7, 1, 6, 0, 6], [6, 6, 0, 6, 6, 6, 6]]
 		int bis = spalte + steine;
 		int ubergabeSteine = steine;
@@ -55,36 +53,34 @@ public class Spielfeld {
 		// spalte 0 steine 8
 
 		if (bis > 6) {
-			
+
 			for (int i = spalte; i <= 6; i++) {
 				spielfeld[reihe][i]++;
 				ubergabeSteine--;
 			}
-			oben(0, 6, ubergabeSteine);
+			oben(0, 6, ubergabeSteine, akt);
 		} else {
 			int aktS = 0;
-			for (int i = spalte; i < spalte+steine; i++) {
+			for (int i = spalte; i < spalte + steine; i++) {
 				spielfeld[reihe][i]++;
 				aktS = i;
 			}
 			if (nextNotZero(aktS, reihe)) {
-				if(aktS==6) {
-					ziehe(0,6);
-				}else {
-					ziehe(reihe, aktS + 1);
+				if (aktS == 6) {
+					ziehe(0, 6, akt);
+				} else {
+					ziehe(reihe, aktS + 1, akt);
 
 				}
 			} else {
-				// nächste ist 0 
-				removeStones(aktS, reihe);
+				// nächste ist 0
+				removeStones(aktS, reihe, akt);
 
-				
-				
 			}
 		}
 	}
 
-	private void oben(int reihe, int spalte, int steine) {
+	private void oben(int reihe, int spalte, int steine, Spieler akt) {
 		// bsp spalte 2 15 steine [[6, 6, 6, 0, 5, 0, 6], [6, 6, 0, 6, 6, 6, 6]]
 		// 0 0 15 0 0 0 0
 		// zweiter durchlauf 7 steine
@@ -96,42 +92,53 @@ public class Spielfeld {
 				ubergabeSteine--;
 			}
 
-			unten(1, 0, ubergabeSteine);
+			unten(1, 0, ubergabeSteine, akt);
 		} else {
 			int aktS = 0;
-			int ende = spalte-steine;
+			int ende = spalte - steine;
 			for (int i = spalte; i > ende; i--) {
 				spielfeld[reihe][i]++;
 				aktS = i;
 			}
 			if (nextNotZero(aktS, reihe)) {
-				if(aktS==0) {
-					ziehe(1, 0);
-				}else {
-					ziehe(reihe, aktS  -1);
+				if (aktS == 0) {
+					ziehe(1, 0, akt);
+				} else {
+					ziehe(reihe, aktS - 1, akt);
 				}
-			}else {
-				//next is zero
-				removeStones(aktS, reihe);
+			} else {
+				// next is zero
+				removeStones(aktS, reihe, akt);
 			}
 
 		}
 
 	}
 
-	private void removeStones(int spalte, int reihe) {
-		if(reihe==0) {
-			spielfeld[1][spalte]=0;
-			if(spalte!=0) {
-				spielfeld[0][spalte-1]=0;
+	private void removeStones(int spalte, int reihe, Spieler akt) {
+		if (reihe == 0) {
+			int punkte = spielfeld[1][spalte];
+			spielfeld[1][spalte] = 0;
+			akt.addSteine(punkte);
+			if (spalte != 0) {
+				punkte = spielfeld[0][spalte - 1];
+				akt.addSteine(punkte);
+				spielfeld[0][spalte - 1] = 0;
+
 			}
-		}else {
-			spielfeld[0][spalte]=0;
-			if(spalte!=6) {
-				spielfeld[1][spalte+1]=0;
+		} else {
+			int punkte = spielfeld[0][spalte];
+			akt.addSteine(punkte);
+			spielfeld[0][spalte] = 0;
+			if (spalte != 6) {
+				punkte = spielfeld[1][spalte + 1];
+				akt.addSteine(punkte);
+				spielfeld[1][spalte + 1] = 0;
+
 			}
 		}
 	}
+
 	private boolean nextNotZero(int spalte, int reihe) {
 		boolean nextNotZero = false;
 		if (reihe == 0) {

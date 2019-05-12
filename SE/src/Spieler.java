@@ -23,6 +23,9 @@ abstract class Spieler {
 		this.steine = steine;
 	}
 	
+	public void addSteine(int steine) {
+		this.steine=this.steine+steine;
+	}
 	
 
 }
