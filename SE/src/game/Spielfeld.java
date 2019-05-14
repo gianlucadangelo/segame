@@ -29,6 +29,7 @@ public class Spielfeld {
 	}
 
 	public void ziehe(int reihe, int spalte, Spieler akt) {
+		System.out.println(this.toString());
 		int steine = spielfeld[reihe][spalte];
 		spielfeld[reihe][spalte] = 0;
 		// Schau ob wir oben oder unten sind

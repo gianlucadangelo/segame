@@ -7,18 +7,16 @@ public class SpielUI {
 		System.out.println("Spielen Ja oder nein? ");
 		Scanner sc = new Scanner(System.in);
 
-		//String was = sc.nextLine();
-		String was = "ja";
+		String was = sc.nextLine();
+		//String was = "ja";
 		if(was.toLowerCase().equals("ja")) {
 			boolean game = true;
-			//System.out.println("Spieler1");
+			System.out.println("Spieler1");
 			String spieler1,spieler2;
-			//spieler1 = sc.nextLine();
-			spieler1="computer";
-		//	System.out.println("Spieler2");
-			//spieler2 = sc.nextLine();
+			spieler1 = sc.nextLine();
+			System.out.println("Spieler2");
+			spieler2 = sc.nextLine();
 			Spiel sp = new Spiel();
-			spieler2 = "test2";
 			
 			if(spieler1.toLowerCase().contains("computer")) {
 				Computer cp = new Computer("1#"+spieler1, 0, false);
@@ -47,7 +45,8 @@ public class SpielUI {
 					    sp.ziehe(sp.gibSpieler(), zufallszahl);
 					}
 				}else {
-					System.out.println(sp.aktSpieler);
+					System.out.println(sp.aktSpieler.getName());
+					System.out.println(sp.aktSpieler.getSteine());
 					System.out.println("Gib spalte an");
 					int spalte = sc.nextInt();
 					sp.ziehe(sp.gibSpieler(), spalte);
