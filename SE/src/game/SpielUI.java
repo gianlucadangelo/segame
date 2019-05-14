@@ -20,25 +20,28 @@ public class SpielUI {
 			
 			if(spieler1.toLowerCase().contains("computer")) {
 				Computer cp = new Computer("1#"+spieler1, 0, false);
-				sp.addSpieler(cp);
+				Spiel.addSpieler(cp);
 			}else {
 				Mensch mensch = new Mensch("1#"+spieler1,0);
-				sp.addSpieler(mensch);
+				Spiel.addSpieler(mensch);
 			}
 			if(spieler2.toLowerCase().contains("computer")) {
 				Computer cp = new Computer("2#"+spieler2, 0, false);
-				sp.addSpieler(cp);
+				Spiel.addSpieler(cp);
 
 			}else {
 				Mensch mensch = new Mensch("2#"+spieler2,0);
-				sp.addSpieler(mensch);
+				Spiel.addSpieler(mensch);
 
 			}
 			sp.start();
 			while(game) {
+				System.out.println("Spielfeld");
+				System.out.println(sp.sf.toString());
 				if(sp.gibSpieler().getName().contains("computer")) {
 					Computer cp = (Computer) sp.gibSpieler();
 					if(cp.isSchwer()) {
+						sp.zieheComputerSchwer(sp.aktSpieler);
 					
 					}else {
 					   int zufallszahl = (int)(Math.random() * 6); 
@@ -51,7 +54,7 @@ public class SpielUI {
 					int spalte = sc.nextInt();
 					sp.ziehe(sp.gibSpieler(), spalte);
 				}
-
+				game =!(sp.hatGewonnen());
 				sp.getStatus();
 				sp.changeSpieler();
 				}

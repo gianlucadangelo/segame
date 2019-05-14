@@ -58,6 +58,7 @@ public class Spielfeld {
 
 			for (int i = spalte; i <= 6; i++) {
 				spielfeld[reihe][i]++;
+				this.kanuCheck(reihe, i);
 				ubergabeSteine--;
 			}
 			oben(0, 6, ubergabeSteine, akt);
@@ -65,6 +66,8 @@ public class Spielfeld {
 			int aktS = 0;
 			for (int i = spalte; i < spalte + steine; i++) {
 				spielfeld[reihe][i]++;
+				this.kanuCheck(reihe, i);
+
 				aktS = i;
 			}
 			if (nextNotZero(aktS, reihe)) {
@@ -91,6 +94,8 @@ public class Spielfeld {
 		if (bis < 0) {
 			for (int i = spalte; i >= 0; i--) {
 				spielfeld[reihe][i]++;
+				this.kanuCheck(reihe, i);
+
 				ubergabeSteine--;
 			}
 
@@ -100,6 +105,8 @@ public class Spielfeld {
 			int ende = spalte - steine;
 			for (int i = spalte; i > ende; i--) {
 				spielfeld[reihe][i]++;
+				this.kanuCheck(reihe, i);
+
 				aktS = i;
 			}
 			if (nextNotZero(aktS, reihe)) {
@@ -115,6 +122,22 @@ public class Spielfeld {
 
 		}
 
+	}
+	
+	private void kanuCheck(int reihe, int spalte) {
+		
+		if(spielfeld[reihe][spalte]==4) {
+			int steine = 4;
+			spielfeld[reihe][spalte]=0;
+			if(reihe==0) {
+				Spieler sp1 = Spiel.spielerListe[0];
+				sp1.addSteine(steine);
+			}else {
+				Spieler sp2 = Spiel.spielerListe[0];
+				sp2.addSteine(4);
+
+			}
+		}
 	}
 
 	private void removeStones(int spalte, int reihe, Spieler akt) {
@@ -174,5 +197,25 @@ public class Spielfeld {
 	public int getReihe() {
 		return reihe;
 	}
-
+	
+	public boolean spielerLeisteLeer(Spieler akt){
+		boolean cafeFull = false;
+		String[] array = akt.getName().split("#");
+		String feld = array[0];
+		int check = Integer.valueOf(feld) - 1;
+		
+		if(this.spielfeld[check][0] ==0 && this.spielfeld[check][1] ==0 && this.spielfeld[check][2] ==0 && this.spielfeld[check][3] ==0 && this.spielfeld[check][4] ==0 && this.spielfeld[check][5] ==0 && this.spielfeld[check][6] ==0) {
+			cafeFull = true;
+			int gesSteineAufFeld=0;
+			for (int[] reihe : spielfeld) {
+				for (int steine : reihe) {	
+					gesSteineAufFeld= gesSteineAufFeld+steine;
+				}		
+			}
+			akt.addSteine(gesSteineAufFeld);
+		}
+		
+		return cafeFull;
+		
+	}
 }
