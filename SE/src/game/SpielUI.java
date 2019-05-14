@@ -55,8 +55,11 @@ public class SpielUI {
 					sp.ziehe(sp.gibSpieler(), spalte);
 				}
 				game =!(sp.hatGewonnen());
-				sp.getStatus();
-				sp.changeSpieler();
+				if(game=!false) {
+					sp.getStatus();
+					sp.changeSpieler();
+				}
+
 				}
 
 		}else {
