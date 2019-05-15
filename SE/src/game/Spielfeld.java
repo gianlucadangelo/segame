@@ -21,10 +21,10 @@ public class Spielfeld {
 
 	@Override
 	public String toString() {
-		return "Oben \n " + "|" + spielfeld[0][0] + "|" + spielfeld[0][1] + "|" + spielfeld[0][2] + "|"
-				+ spielfeld[0][3] + "|" + spielfeld[0][4] + "|" + spielfeld[0][5] + "|" + spielfeld[0][6]
-				+ "\n Unten \n" + "|" + spielfeld[1][0] + "|" + spielfeld[1][1] + "|" + spielfeld[1][2] + "|"
-				+ spielfeld[1][3] + "|" + spielfeld[1][4] + "|" + spielfeld[1][5] + "|" + spielfeld[1][6];
+		return "Oben \n" + "[" + spielfeld[0][0] + "] [" + spielfeld[0][1] + "] [" + spielfeld[0][2] + "] ["
+				+ spielfeld[0][3] + "] [" + spielfeld[0][4] + "] [" + spielfeld[0][5] + "] [" + spielfeld[0][6] + "]"
+				+ "\nUnten \n" + "[" + spielfeld[1][0] + "] [" + spielfeld[1][1] + "] [" + spielfeld[1][2] + "] ["
+				+ spielfeld[1][3] + "] [" + spielfeld[1][4] + "] [" + spielfeld[1][5] + "] [" + spielfeld[1][6] + "]";
 
 	}
 

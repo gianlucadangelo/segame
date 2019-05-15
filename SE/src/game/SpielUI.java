@@ -51,7 +51,7 @@ public class SpielUI {
 					System.out.println(sp.aktSpieler.getName());
 					System.out.println(sp.aktSpieler.getSteine());
 					System.out.println("Gib spalte an");
-					int spalte = sc.nextInt();
+					int spalte = sc.nextInt()-1;
 					sp.ziehe(sp.gibSpieler(), spalte);
 				}
 				game =!(sp.hatGewonnen());
