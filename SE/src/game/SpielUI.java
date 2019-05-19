@@ -89,9 +89,11 @@ public class SpielUI {
 					sp.ziehe(sp.gibSpieler(), spalte);
 				}
 				game = !(sp.hatGewonnen());
-				if (game = !false) {
+				if (game) {
 					sp.getStatus();
 					sp.changeSpieler();
+				} else {
+					System.out.println("Spielende!");
 				}
 
 			}

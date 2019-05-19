@@ -212,7 +212,7 @@ public class Spielfeld {
 					gesSteineAufFeld= gesSteineAufFeld+steine;
 				}		
 			}
-			akt.addSteine(gesSteineAufFeld);
+			akt.addSteine(gesSteineAufFeld); // Falsch --> Steine werden aktuellen Spieler gutgeschrieben und nicht dem auf welcher Seite die Steine liegen
 		}
 		
 		return cafeFull;
