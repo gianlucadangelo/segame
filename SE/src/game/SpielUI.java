@@ -84,9 +84,23 @@ public class SpielUI {
 				} else {
 					System.out.println(sp.aktSpieler.getName());
 					System.out.println(sp.aktSpieler.getSteine());
-					System.out.println("Gib spalte an");
-					int spalte = sc.nextInt() - 1;
-					sp.ziehe(sp.gibSpieler(), spalte);
+					if (sp.aktSpieler.getSteine() >= 36) {
+						System.out.println("Möchtest du aufgeben? J/N ");
+						if (sc.nextLine().toLowerCase().equals("j")) {
+							for (Spieler spieler : sp.spielerListe) {
+								if (!(spieler.getName().equals(sp.aktSpieler.getName()))) {
+									System.out.println("Spiel wird beendet. " + spieler + " hat gewonnen.");
+									sc.close();
+								}
+							}
+
+						}
+
+					}else {
+						System.out.println("Gib spalte an");
+						int spalte = sc.nextInt() - 1;
+						sp.ziehe(sp.gibSpieler(), spalte);
+					}
 				}
 				game = !(sp.hatGewonnen());
 				if (game) {

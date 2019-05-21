@@ -39,6 +39,7 @@ public class Spiel {
 		System.out.println(sf.toString());
 		// System.out.println(aktSpieler.getName());
 		System.out.println(aktSpieler.getSteine());
+	
 		System.out.println("\n");
 		System.out.println("####################################");
 	}
