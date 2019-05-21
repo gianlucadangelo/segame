@@ -19,18 +19,18 @@ public class SpielUI {
 			spieler2 = sc.nextLine();
 			Spiel sp = new Spiel();
 
-			if (spieler1.toLowerCase().contains("computer")) {
+			if (spieler1.toLowerCase().contains("ki")) {
 				System.out.println("Auswahl Schwierigkeitsgrad für" + spieler1 + ":" + "\n"
 						+ "Bitte normal bzw. schwer eingeben.");
 				String mode = sc.nextLine();
 				boolean korrekt = false;
 				do {
 					if (mode.toLowerCase().equals("schwer")) {
-						Computer cpS = new Computer("1#" + spieler1, 0, true);
+						KI cpS = new KI("1#" + spieler1, 0, true);
 						Spiel.addSpieler(cpS);
 						korrekt = true;
 					} else if (mode.toLowerCase().equals("normal")) {
-						Computer cp = new Computer("1#" + spieler1, 0, false);
+						KI cp = new KI("1#" + spieler1, 0, false);
 						Spiel.addSpieler(cp);
 						korrekt = true;
 					} else {
@@ -43,18 +43,18 @@ public class SpielUI {
 				Mensch mensch = new Mensch("1#" + spieler1, 0);
 				Spiel.addSpieler(mensch);
 			}
-			if (spieler2.toLowerCase().contains("computer")) {
+			if (spieler2.toLowerCase().contains("ki")) {
 				System.out.println("Auswahl Schwierigkeitsgrad für" + spieler2 + ":" + "\n"
 						+ "Bitte normal bzw. schwer eingeben.");
 				String mode = sc.nextLine();
 				boolean korrekt = false;
 				do {
 					if (mode.toLowerCase().equals("schwer")) {
-						Computer cpS = new Computer("2#" + spieler2, 0, true);
+						KI cpS = new KI("2#" + spieler2, 0, true);
 						Spiel.addSpieler(cpS);
 						korrekt = true;
 					} else if (mode.toLowerCase().equals("normal")) {
-						Computer cp = new Computer("2#" + spieler2, 0, false);
+						KI cp = new KI("2#" + spieler2, 0, false);
 						Spiel.addSpieler(cp);
 						korrekt = true;
 					} else {
@@ -72,10 +72,10 @@ public class SpielUI {
 			while (game) {
 				System.out.println("Spielfeld");
 				System.out.println(sp.sf.toString());
-				if (sp.gibSpieler().getName().contains("computer")) {
-					Computer cp = (Computer) sp.gibSpieler();
+				if (sp.gibSpieler().getName().contains("ki")) {
+					KI cp = (KI) sp.gibSpieler();
 					if (cp.isSchwer()) {
-						sp.zieheComputerSchwer(sp.aktSpieler);
+						sp.zieheKISchwer(sp.aktSpieler);
 
 					} else {
 						int zufallszahl = (int) (Math.random() * 6);

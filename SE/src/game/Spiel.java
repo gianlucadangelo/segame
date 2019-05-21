@@ -74,7 +74,7 @@ public class Spiel {
 		return gewonnen;
 	}
 
-	public void zieheComputerSchwer(Spieler aktSpieler1) {
+	public void zieheKISchwer(Spieler aktSpieler1) {
 
 	}
 

@@ -1,9 +1,9 @@
 package game;
 
-public class Computer extends Spieler{
+public class KI extends Spieler{
 
 	private boolean schwer;
-	public Computer(String name, int steine,boolean mode) {
+	public KI(String name, int steine,boolean mode) {
 		super(name, steine);
 		this.setSchwer(mode);
 	}
