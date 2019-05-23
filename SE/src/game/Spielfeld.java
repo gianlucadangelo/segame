@@ -5,10 +5,12 @@ public class Spielfeld {
 	private int[][] spielfeld;
 	private int spalte;
 	private int reihe;
+	private String[] zugReihenfolge;
 
 	Spielfeld() {
 		spielfeld = new int[2][7];
 		fillFields();
+		zugReihenfolge = new String[] {"0#6","0#5","0#4","0#3","0#2","0#1","0#0","1#0","1#1","1#2","1#3","1#4","1#5","1#6"};
 	}
 
 	private void fillFields() {
@@ -21,11 +23,55 @@ public class Spielfeld {
 
 	@Override
 	public String toString() {
-		return "Oben \n" + "[" + spielfeld[0][0] + "] [" + spielfeld[0][1] + "] [" + spielfeld[0][2] + "] ["
+		return 	"-----------------------------------\n"
+				+"Oben  " + "[" + spielfeld[0][0] + "] [" + spielfeld[0][1] + "] [" + spielfeld[0][2] + "] ["
 				+ spielfeld[0][3] + "] [" + spielfeld[0][4] + "] [" + spielfeld[0][5] + "] [" + spielfeld[0][6] + "]"
-				+ "\nUnten \n" + "[" + spielfeld[1][0] + "] [" + spielfeld[1][1] + "] [" + spielfeld[1][2] + "] ["
-				+ spielfeld[1][3] + "] [" + spielfeld[1][4] + "] [" + spielfeld[1][5] + "] [" + spielfeld[1][6] + "]";
+				+ "\nUnten " + "[" + spielfeld[1][0] + "] [" + spielfeld[1][1] + "] [" + spielfeld[1][2] + "] ["
+				+ spielfeld[1][3] + "] [" + spielfeld[1][4] + "] [" + spielfeld[1][5] + "] [" + spielfeld[1][6] + "]\n"
+				+"-----------------------------------";
 
+	}
+	
+	public void ziehen(int reihe, int spalte, Spieler akt) {
+		System.out.println(this.toString());
+		int ziehSteine = spielfeld[reihe][spalte];
+		spielfeld[reihe][spalte]=0;
+		int platzierung = zugReihenfolgenPlatzierung(reihe,spalte)+1;
+		for(int i = 0; i<ziehSteine ; i++) {
+			String[] zwischenSpeicher = zugReihenfolge[platzierung].split("#");
+			reihe = Integer.parseInt(zwischenSpeicher[0]);
+			spalte = Integer.parseInt(zwischenSpeicher[1]);
+			spielfeld[reihe][spalte]++;
+			platzierung++;
+			if(platzierung>13)platzierung=0;
+		}
+		if(nextNotZero(reihe,spalte)) {
+			String[]zwischenSpeicher = zugReihenfolge[platzierung].split("#");
+			reihe = Integer.parseInt(zwischenSpeicher[0]);
+			spalte = Integer.parseInt(zwischenSpeicher[1]);
+			ziehen(reihe,spalte,akt);
+		}
+		else {
+			String[]zwischenSpeicher = zugReihenfolge[platzierung++].split("#");
+			reihe = Integer.parseInt(zwischenSpeicher[0]);
+			spalte = Integer.parseInt(zwischenSpeicher[1]);
+			removeStones(spalte,reihe,akt);
+		}
+		
+	}
+	
+	private int zugReihenfolgenPlatzierung(int reihe, int spalte){
+		int zaehler = 0;
+		for(String speicher : zugReihenfolge) {
+			String[] array = speicher.split("#");
+			if(reihe == Integer.parseInt(array[0])){
+				if(spalte== Integer.parseInt(array[1])) {
+					return zaehler;
+				}
+			}
+			zaehler++;
+		}
+		return -4;
 	}
 
 	public void ziehe(int reihe, int spalte, Spieler akt) {
@@ -63,14 +109,14 @@ public class Spielfeld {
 			}
 			oben(0, 6, ubergabeSteine, akt);
 		} else {
-			int aktS = 0;
+			int aktS = 0; 
 			for (int i = spalte; i < spalte + steine; i++) {
 				spielfeld[reihe][i]++;
 				this.kanuCheck(reihe, i);
 
 				aktS = i;
 			}
-			if (nextNotZero(aktS, reihe)) {
+			if (nextNotZero(reihe, aktS)) {
 				if (aktS == 6) {
 					ziehe(0, 6, akt);
 				} else {
@@ -109,7 +155,7 @@ public class Spielfeld {
 
 				aktS = i;
 			}
-			if (nextNotZero(aktS, reihe)) {
+			if (nextNotZero(reihe, aktS)) {
 				if (aktS == 0) {
 					ziehe(1, 0, akt);
 				} else {
@@ -143,6 +189,7 @@ public class Spielfeld {
 	private void removeStones(int spalte, int reihe, Spieler akt) {
 		if (reihe == 0) {
 			int punkte = spielfeld[1][spalte];
+			punkte=+spielfeld[reihe][spalte];
 			spielfeld[1][spalte] = 0;
 			akt.addSteine(punkte);
 			if (spalte != 0) {
@@ -153,6 +200,7 @@ public class Spielfeld {
 			}
 		} else {
 			int punkte = spielfeld[0][spalte];
+			punkte=+spielfeld[reihe][spalte];
 			akt.addSteine(punkte);
 			spielfeld[0][spalte] = 0;
 			if (spalte != 6) {
@@ -164,7 +212,7 @@ public class Spielfeld {
 		}
 	}
 
-	private boolean nextNotZero(int spalte, int reihe) {
+	private boolean nextNotZero(int reihe, int spalte) {
 		boolean nextNotZero = false;
 		if (reihe == 0) {
 			if (spalte != 0) {
