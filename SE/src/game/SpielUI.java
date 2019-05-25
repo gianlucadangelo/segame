@@ -107,6 +107,7 @@ public class SpielUI {
 			}
 			sp.start();
 			while (game) {
+				boolean spielerwechsel = false;
 				System.out.println("Spielfeld");
 				System.out.println(sp.sf.toString());
 				if (sp.gibSpieler().getName().contains("ki")) {
@@ -135,19 +136,29 @@ public class SpielUI {
 
 					}else {
 						System.out.println("Wählen Sie die gewünschte Spalte (1 bis 7) aus.");
-						int spalte = sc.nextInt() - 1;
+						try {
+							
+							int spalte = Integer.parseInt(sc.nextLine())-1;
+						
+						
 						while( (spalte < 0 || spalte > 6) || (sp.sf.fieldNotEmpty(sp.gibSpieler().getReihe() ,spalte)!=true) ) {
 							if(spalte > 6 || spalte < 0) System.out.println("Bitte geben Sie eine Spalte von 1-7 an");
 							else System.out.println(" Bitte waehlen Sie ein Feld aus, was nicht leer ist.");
-							spalte = sc.nextInt() - 1;
+							 spalte = Integer.parseInt(sc.nextLine())-1;
 						}
 						sp.ziehe(sp.gibSpieler(), spalte);
 						
+						}catch(NumberFormatException ex) {
+							System.out.println("Bitte geben Sie eine Spalte von 1-7 an");
+							spielerwechsel = true;
+							}
 					}
 				}
+				
 				game = !(sp.hatGewonnen());
 				if (game) {
 					sp.getStatus();
+					if(!spielerwechsel)
 					sp.changeSpieler();
 				} else {
 					System.out.println("Spiel wird beendet");
