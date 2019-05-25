@@ -73,7 +73,9 @@ public class Spielfeld {
 		}
 		//Falls das nächste Feld leer ist, wird removeStones mit der Position des übernächsten Feldes aufgerufen
 		else {
-			String[]zwischenSpeicher = zugReihenfolge[platzierung+1].split("#");
+			if(platzierung == 13)platzierung = 0;
+			else platzierung++;
+			String[]zwischenSpeicher = zugReihenfolge[platzierung].split("#");
 			reihe = Integer.parseInt(zwischenSpeicher[0]);
 			spalte = Integer.parseInt(zwischenSpeicher[1]);
 			removeStones(spalte,akt);
