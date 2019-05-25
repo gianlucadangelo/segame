@@ -64,7 +64,21 @@ public class SpielUI {
 			}
 			
 			System.out.println("Name für Spieler 2 eingeben. Falls KI gewünscht, bitte KI eingeben.");
-			spieler2=sc.nextLine();
+			boolean name = false;
+			do {
+				spieler2=sc.nextLine();
+				if (spieler2.toLowerCase().equals("ki"))
+					name =true;
+				if(spieler2.toLowerCase().equals(spieler1.toLowerCase())&&!(spieler2.toLowerCase().equals("ki")) )
+				System.out.println("Bitte anderen Namen für Spieler 2 wählen!");
+				
+				 
+				else {
+					name=true;
+				}
+			}while(!name);
+			
+			
 			
 			if (spieler2.toLowerCase().equals("ki")) {
 				System.out.println("Auswahl Schwierigkeitsgrad für " + spieler2 + ":" + "\n"
