@@ -4,11 +4,20 @@ abstract class Spieler {
 	
 	private String name;
 	private int steine;
+	private int reihe;
 	
-	
-	public Spieler(String name, int steine) {
+	public Spieler(String name, int steine,int reihe) {
 		setName(name);
-		setSteine(0);
+		setSteine(steine);
+		setReihe(reihe);
+	}
+	
+	public int getReihe() {
+		return reihe;
+	}
+	
+	public void setReihe(int reihe) {
+		this.reihe = reihe;
 	}
 	
 	public String getName() {

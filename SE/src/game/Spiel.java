@@ -15,12 +15,7 @@ public class Spiel {
 	public void ziehe(Spieler aktSpieler, int spalte) {
 		System.out.println("################################");
 		System.out.println("\n Vorher \n");
-		System.out.println(sf.toString());
-
-		String[] array = aktSpieler.getName().split("#");
-		String feld = array[0];
-		int startfeld = Integer.parseInt(feld) - 1;
-		sf.ziehen(startfeld, spalte, aktSpieler);
+		sf.ziehen(aktSpieler.getReihe(), spalte, aktSpieler);
 
 	}
 
@@ -37,8 +32,7 @@ public class Spiel {
 	public void getStatus() {
 	//	System.out.println("\n Nachher \n");
 		System.out.println(sf.toString());
-		String[] name = aktSpieler.getName().split("#");
-		System.out.println(name[1]);
+		System.out.println(aktSpieler.getName());
 		System.out.println(aktSpieler.getSteine());
 	
 		System.out.println("\n");

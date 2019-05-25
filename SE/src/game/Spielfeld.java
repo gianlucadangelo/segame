@@ -8,12 +8,11 @@ public class Spielfeld {
 	/**
 	 *  Ein Array was die Zugreihenfolge angibt an der sich die ziehen Methode entlanghangelt
 	 */
-	private String[] zugReihenfolge;
+	private String[] zugReihenfolge = new String[] {"0#6","0#5","0#4","0#3","0#2","0#1","0#0","1#0","1#1","1#2","1#3","1#4","1#5","1#6"};
 
 	Spielfeld() {
 		spielfeld = new int[2][7];
 		fillFields();
-		zugReihenfolge = new String[] {"0#6","0#5","0#4","0#3","0#2","0#1","0#0","1#0","1#1","1#2","1#3","1#4","1#5","1#6"};
 	}
 
 	private void fillFields() {
@@ -24,6 +23,10 @@ public class Spielfeld {
 		}
 	}
 
+	public boolean fieldNotEmpty(int reihe, int spalte) {
+		if(spielfeld[reihe][spalte]==0)return false;
+		return true;
+	}
 	@Override
 	public String toString() {
 		return 	"-----------------------------------\n"
@@ -47,7 +50,9 @@ public class Spielfeld {
 		System.out.println(this.toString());
 		int ziehSteine = spielfeld[reihe][spalte];
 		spielfeld[reihe][spalte]=0;
-		int platzierung = zugReihenfolgenPlatzierung(reihe,spalte)+1;
+		int platzierung = zugReihenfolgenPlatzierung(reihe,spalte);
+		if(platzierung==13)platzierung=0;
+		else platzierung++;
 		//Diese Schleife wiederholt sich so oft wieviele Steine platziert werden muessen und geht die Eintraege des Arrays
 		//Zugreihenfolge durch und lieﬂt daraus das n‰chste Feld aus
 		for(int i = 0; i<ziehSteine ; i++) {
@@ -56,7 +61,7 @@ public class Spielfeld {
 			spalte = Integer.parseInt(zwischenSpeicher[1]);
 			spielfeld[reihe][spalte]++;
 			platzierung++;
-			if(platzierung>13)platzierung=0;
+			if(platzierung==14)platzierung=0;
 		}
 		//falls das n‰chste Feld nicht leer ist, wird ziehen rekursiv wieder aufgerufen mit der Position des
 		//n‰chsten Feldes
@@ -260,9 +265,7 @@ public class Spielfeld {
 	
 	public boolean spielerLeisteLeer(Spieler akt){
 		boolean cafeFull = false;
-		String[] array = akt.getName().split("#");
-		String feld = array[0];
-		int check = Integer.valueOf(feld) - 1;
+		int check = akt.getReihe();
 		
 		if(this.spielfeld[check][0] ==0 && this.spielfeld[check][1] ==0 && this.spielfeld[check][2] ==0 && this.spielfeld[check][3] ==0 && this.spielfeld[check][4] ==0 && this.spielfeld[check][5] ==0 && this.spielfeld[check][6] ==0) {
 			cafeFull = true;

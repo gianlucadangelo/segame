@@ -59,7 +59,7 @@ public class SpielUI {
 				} while (!korrekt);
 
 			} else {
-				Mensch mensch = new Mensch("1# " + spieler1, 0);
+				Mensch mensch = new Mensch(spieler1, 0,0);
 				Spiel.addSpieler(mensch);
 			}
 			
@@ -73,11 +73,11 @@ public class SpielUI {
 				boolean korrekt = false;
 				do {
 					if (mode.toLowerCase().equals("schwer")) {
-						KI cpS = new KI("2#" + spieler2, 0, true);
+						KI cpS = new KI(spieler2, 0, true);
 						Spiel.addSpieler(cpS);
 						korrekt = true;
 					} else if (mode.toLowerCase().equals("normal")) {
-						KI cp = new KI("2#" + spieler2, 0, false);
+						KI cp = new KI(spieler2, 0, false);
 						Spiel.addSpieler(cp);
 						korrekt = true;
 					} else {
@@ -87,7 +87,7 @@ public class SpielUI {
 				} while (!korrekt);
 
 			} else {
-				Mensch mensch = new Mensch("2#" + spieler2, 0);
+				Mensch mensch = new Mensch(spieler2, 0,1);
 				Spiel.addSpieler(mensch);
 
 			}
@@ -120,9 +120,15 @@ public class SpielUI {
 						}
 
 					}else {
-						System.out.println("Wählen Sie die gewünschte Spalte aus.");
+						System.out.println("Wählen Sie die gewünschte Spalte (1 bis 7) aus.");
 						int spalte = sc.nextInt() - 1;
+						while( (spalte < 0 || spalte > 6) || (sp.sf.fieldNotEmpty(sp.gibSpieler().getReihe() ,spalte)!=true) ) {
+							if(spalte > 6 || spalte < 0) System.out.println("Bitte geben Sie eine Spalte von 1-7 an");
+							else System.out.println(" Bitte waehlen Sie ein Feld aus, was nicht leer ist.");
+							spalte = sc.nextInt() - 1;
+						}
 						sp.ziehe(sp.gibSpieler(), spalte);
+						
 					}
 				}
 				game = !(sp.hatGewonnen());
