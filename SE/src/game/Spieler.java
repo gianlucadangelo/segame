@@ -5,15 +5,33 @@ abstract class Spieler {
 	private String name;
 	private int steine;
 	private int reihe;
+	static Spieler[] liste = new Spieler[2];
 	
 	public Spieler(String name, int steine,int reihe) {
 		setName(name);
 		setSteine(steine);
 		setReihe(reihe);
+		setSpielerVonListe();
 	}
 	
 	public int getReihe() {
 		return reihe;
+	}
+	
+	public Spieler getAndererSpieler() {
+		for(Spieler a : liste) {
+			if(a!=this)return a;
+			
+		}
+		return this;
+	}
+	
+	public Spieler getSpielerVonListe(int a) {
+		return liste[a];
+	}
+	
+	public void setSpielerVonListe() {
+		liste[reihe]=this;
 	}
 	
 	public void setReihe(int reihe) {

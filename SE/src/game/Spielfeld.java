@@ -1,10 +1,12 @@
 package game;
-
+import java.util.Scanner;
+import java.util.ArrayList;
 public class Spielfeld {
 
 	private int[][] spielfeld;
 	private int spalte;
 	private int reihe;
+	ArrayList<String>karuListe = new ArrayList<String>() ;
 	/**
 	 *  Ein Array was die Zugreihenfolge angibt an der sich die ziehen Methode entlanghangelt
 	 */
@@ -35,7 +37,7 @@ public class Spielfeld {
 				+ "\nUnten " + "[" + spielfeld[1][0] + "] [" + spielfeld[1][1] + "] [" + spielfeld[1][2] + "] ["
 				+ spielfeld[1][3] + "] [" + spielfeld[1][4] + "] [" + spielfeld[1][5] + "] [" + spielfeld[1][6] + "]\n"
 				+"-----------------------------------";
-
+		
 	}
 	/**
 	 * zieht die Steine vom angegebenem Feld und ruft sich so lange selbst wieder auf
@@ -46,31 +48,90 @@ public class Spielfeld {
 	 * @param spalte Die Spalte des ausgewählten Feld für den Zugbeginn
 	 * @param akt Der aktuelle Spieler, welcher den Zug macht
 	 */
-	public void ziehen(int reihe, int spalte, Spieler akt) {
-		System.out.println(this.toString());
+	public void ziehen(int reihe, int spalte, Spieler akt,Scanner sc) {
+		
 		int ziehSteine = spielfeld[reihe][spalte];
 		spielfeld[reihe][spalte]=0;
 		int platzierung = zugReihenfolgenPlatzierung(reihe,spalte);
 		if(platzierung==13)platzierung=0;
 		else platzierung++;
+		String input;
 		//Diese Schleife wiederholt sich so oft wieviele Steine platziert werden muessen und geht die Eintraege des Arrays
 		//Zugreihenfolge durch und ließt daraus das nächste Feld aus
 		for(int i = 0; i<ziehSteine ; i++) {
-			String[] zwischenSpeicher = zugReihenfolge[platzierung].split("#");
-			reihe = Integer.parseInt(zwischenSpeicher[0]);
-			spalte = Integer.parseInt(zwischenSpeicher[1]);
-			spielfeld[reihe][spalte]++;
-			platzierung++;
 			if(platzierung==14)platzierung=0;
+			System.out.println("Drücke ENTER zum fortfahren oder geben Sie KARU ein um ein Karu anzugeben.");
+			input = sc.nextLine();
+			if(input.equals("")) {
+				String[] zwischenSpeicher = zugReihenfolge[platzierung].split("#");
+				reihe = Integer.parseInt(zwischenSpeicher[0]);
+				spalte = Integer.parseInt(zwischenSpeicher[1]);
+				spielfeld[reihe][spalte]++;
+				if(platzierung==13)platzierung=0;
+				else platzierung++;
+				System.out.println(this.toString());
+			}
+			else if(input.equalsIgnoreCase("karu")) {
+				if(this.karu() !=true) System.out.println("Es gibt kein Karu zu beanspruchen.");
+				else {
+					do {
+						System.out.println("Geben Sie die Reihe vom Feld mit dem Karu an");
+					}while(!sc.hasNextInt());
+					
+					int reiheEingabe = sc.nextInt()-1;
+					
+					do {
+						System.out.println("Geben Sie die Spalte vom Feld mit dem Karu an");
+					}while(!sc.hasNextInt());
+					
+					int spalteEingabe = sc.nextInt()-1;
+					
+					if(karuListe.contains(reiheEingabe+"#"+spalteEingabe)) {
+						System.out.print("Eingabe korrekt\n");
+						akt.getSpielerVonListe(reiheEingabe).addSteine(this.spielfeld[reiheEingabe][spalteEingabe]);
+						this.spielfeld[reiheEingabe][spalteEingabe]=0;
+					}
+					String[] zwischenSpeicher = zugReihenfolge[platzierung].split("#");
+					reihe = Integer.parseInt(zwischenSpeicher[0]);
+					spalte = Integer.parseInt(zwischenSpeicher[1]);
+					spielfeld[reihe][spalte]++;
+					if(platzierung==13)platzierung=0;
+					else platzierung++;
+					System.out.println(this.toString());
+				}
+				
+			}
+		
 		}
 		//falls das nächste Feld nicht leer ist, wird ziehen rekursiv wieder aufgerufen mit der Position des
 		//nächsten Feldes
+		System.out.println("Drücke ENTER zum fortfahren oder geben Sie KARU ein um ein Karu anzugeben.");
+		input = sc.nextLine();
+		if(input.equalsIgnoreCase("karu")) {
+			if(this.karu() !=true) System.out.println("Es gibt kein Karu zu beanspruchen.");
+			else {
+				do {
+				System.out.println("Geben Sie die Reihe vom Feld mit dem Karu an");
+				}while(!sc.hasNextInt());
+				int reiheEingabe = sc.nextInt()-1;
+				do {
+				System.out.println("Geben Sie die Spalte vom Feld mit dem Karu an");
+				}while(!sc.hasNextInt());
+				int spalteEingabe = sc.nextInt()-1;
+				if(karuListe.contains(reiheEingabe+"#"+spalteEingabe)) {
+					System.out.print("Eingabe korrekt\n");
+					akt.getSpielerVonListe(reiheEingabe).addSteine(this.spielfeld[reiheEingabe][spalteEingabe]);
+					this.spielfeld[reiheEingabe][spalteEingabe]=0;
+				}
+			}
+		}
+		System.out.println(this.toString());
 		if(nextNotZero(reihe,spalte)) {
 			String[]zwischenSpeicher = zugReihenfolge[platzierung].split("#");
 			reihe = Integer.parseInt(zwischenSpeicher[0]);
 			spalte = Integer.parseInt(zwischenSpeicher[1]);
-			ziehen(reihe,spalte,akt);
-		}
+			ziehen(reihe,spalte,akt,sc);
+		}	
 		//Falls das nächste Feld leer ist, wird removeStones mit der Position des übernächsten Feldes aufgerufen
 		else {
 			if(platzierung == 13)platzierung = 0;
@@ -79,9 +140,10 @@ public class Spielfeld {
 			reihe = Integer.parseInt(zwischenSpeicher[0]);
 			spalte = Integer.parseInt(zwischenSpeicher[1]);
 			removeStones(spalte,akt);
-		}
+			}	
 		
-	}
+		}
+	
 	
 	/**
 	 *  findet die Position des angegebenen Spielfeldes im Array
@@ -104,117 +166,6 @@ public class Spielfeld {
 		return -4;
 	}
 
-//	public void ziehe(int reihe, int spalte, Spieler akt) {
-//		System.out.println(this.toString());
-//		int steine = spielfeld[reihe][spalte];
-//		spielfeld[reihe][spalte] = 0;
-//		// Schau ob wir oben oder unten sind
-//		if (reihe == 0) {
-//
-//			oben(reihe, spalte - 1, steine, akt);
-//
-//		} else {
-//			// Wir sind unten
-//			unten(reihe, spalte + 1, steine, akt);
-//
-//		}
-//
-//	}
-
-//	private void unten(int reihe, int spalte, int steine, Spieler akt) {
-//		// 1 0 13 Steine [[6, 6, 6, 0, 5, 5, 5], [6, 5, 0, 5, 5, 5, 5]] -- [6, 0, 0, 5,
-//		// 5, 5, 5]
-//		// [[7, 7, 7, 1, 6, 0, 6], [6, 6, 0, 6, 6, 6, 6]]
-//		int bis = spalte + steine;
-//		int ubergabeSteine = steine;
-//		// int ubergabeStein = steine - spalte-1;
-//		// spalte 0 steine 8
-//
-//		if (bis > 6) {
-//
-//			for (int i = spalte; i <= 6; i++) {
-//				spielfeld[reihe][i]++;
-//				this.kanuCheck(reihe, i);
-//				ubergabeSteine--;
-//			}
-//			oben(0, 6, ubergabeSteine, akt);
-//		} else {
-//			int aktS = 0; 
-//			for (int i = spalte; i < spalte + steine; i++) {
-//				spielfeld[reihe][i]++;
-//				this.kanuCheck(reihe, i);
-//
-//				aktS = i;
-//			}
-//			if (nextNotZero(reihe, aktS)) {
-//				if (aktS == 6) {
-//					ziehe(0, 6, akt);
-//				} else {
-//					ziehe(reihe, aktS + 1, akt);
-//
-//				}
-//			} else {
-//				// nÃ¤chste ist 0
-//				removeStones(aktS, reihe, akt);
-//
-//			}
-//		}
-//	}
-
-//	private void oben(int reihe, int spalte, int steine, Spieler akt) {
-//		// bsp spalte 2 15 steine [[6, 6, 6, 0, 5, 0, 6], [6, 6, 0, 6, 6, 6, 6]]
-//		// 0 0 15 0 0 0 0
-//		// zweiter durchlauf 7 steine
-//		int bis = spalte - steine + 1;
-//		int ubergabeSteine = steine;
-//		if (bis < 0) {
-//			for (int i = spalte; i >= 0; i--) {
-//				spielfeld[reihe][i]++;
-//				this.kanuCheck(reihe, i);
-//
-//				ubergabeSteine--;
-//			}
-//
-//			unten(1, 0, ubergabeSteine, akt);
-//		} else {
-//			int aktS = 0;
-//			int ende = spalte - steine;
-//			for (int i = spalte; i > ende; i--) {
-//				spielfeld[reihe][i]++;
-//				this.kanuCheck(reihe, i);
-//
-//				aktS = i;
-//			}
-//			if (nextNotZero(reihe, aktS)) {
-//				if (aktS == 0) {
-//					ziehe(1, 0, akt);
-//				} else {
-//					ziehe(reihe, aktS - 1, akt);
-//				}
-//			} else {
-//				// next is zero
-//				removeStones(aktS, reihe, akt);
-//			}
-//
-//		}
-//
-//	}
-	
-//	private void kanuCheck(int reihe, int spalte) {
-//		
-//		if(spielfeld[reihe][spalte]==4) {
-//			int steine = 4;
-//			spielfeld[reihe][spalte]=0;
-//			if(reihe==0) {
-//				Spieler sp1 = Spiel.spielerListe[0];
-//				sp1.addSteine(steine);
-//			}else {
-//				Spieler sp2 = Spiel.spielerListe[0];
-//				sp2.addSteine(4);
-//
-//			}
-//		}
-//	}
 
 	/**
 	 * Nimmt die Steine aus den Mulden und gibt Sie dem
@@ -282,5 +233,19 @@ public class Spielfeld {
 		
 		return cafeFull;
 		
+	}
+	
+	private boolean karu() {
+		boolean karu = false;
+		for(int i = 0; i<2;i++) {
+			for(int j=0;j<7;j++) {
+				
+				if(this.spielfeld[i][j]==4) {
+					karu=true;
+					karuListe.add(i+"#"+j);
+				}
+			}
+		}
+		return karu;
 	}
 }

@@ -108,8 +108,7 @@ public class SpielUI {
 			sp.start();
 			while (game) {
 				boolean spielerwechsel = false;
-				System.out.println("Spielfeld");
-				System.out.println(sp.sf.toString());
+				sp.getStatus();
 				if (sp.gibSpieler().getName().contains("ki")) {
 					KI cp = (KI) sp.gibSpieler();
 					if (cp.isSchwer()) {
@@ -117,11 +116,9 @@ public class SpielUI {
 
 					} else {
 						int zufallszahl = (int) (Math.random() * 6);
-						sp.ziehe(sp.gibSpieler(), zufallszahl);
+						sp.ziehe(sp.gibSpieler(), zufallszahl,sc);
 					}
 				} else {
-					System.out.println(sp.aktSpieler.getName());
-					System.out.println(sp.aktSpieler.getSteine());
 					if (sp.aktSpieler.getSteine() >= 36) {
 						System.out.println("Möchtest du aufgeben? J/N ");
 						if (sc.nextLine().toLowerCase().equals("j")) {
@@ -146,7 +143,7 @@ public class SpielUI {
 							else System.out.println(" Bitte waehlen Sie ein Feld aus, was nicht leer ist.");
 							 spalte = Integer.parseInt(sc.nextLine())-1;
 						}
-						sp.ziehe(sp.gibSpieler(), spalte);
+						sp.ziehe(sp.gibSpieler(), spalte,sc);
 						
 						}catch(NumberFormatException ex) {
 							System.out.println("Bitte geben Sie eine Spalte von 1-7 an");

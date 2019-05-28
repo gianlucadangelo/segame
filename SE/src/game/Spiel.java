@@ -1,5 +1,5 @@
 package game;
-
+import java.util.Scanner;
 public class Spiel {
 	public static Spieler[] spielerListe;
 	public static int spielercounter = 0;
@@ -12,10 +12,8 @@ public class Spiel {
 		start();
 	}
 
-	public void ziehe(Spieler aktSpieler, int spalte) {
-		System.out.println("################################");
-		System.out.println("\n Vorher \n");
-		sf.ziehen(aktSpieler.getReihe(), spalte, aktSpieler);
+	public void ziehe(Spieler aktSpieler, int spalte,Scanner sc) {
+		sf.ziehen(aktSpieler.getReihe(), spalte, aktSpieler,sc);
 
 	}
 
@@ -32,11 +30,10 @@ public class Spiel {
 	public void getStatus() {
 	//	System.out.println("\n Nachher \n");
 		System.out.println(sf.toString());
-		System.out.println(aktSpieler.getName());
-		System.out.println(aktSpieler.getSteine());
-	
+		System.out.println("Am Zug: "+aktSpieler.getName()+" hat "+aktSpieler.getSteine()+" Steine.");
+		System.out.println("        "+aktSpieler.getAndererSpieler().getName()+" hat "+aktSpieler.getAndererSpieler().getSteine()+" Steine.");
 		System.out.println("\n");
-		System.out.println("####################################");
+		
 	}
 
 	public Spieler gibSpieler() {
