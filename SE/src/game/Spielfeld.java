@@ -6,11 +6,12 @@ public class Spielfeld {
 	private int[][] spielfeld;
 	private int spalte;
 	private int reihe;
-	ArrayList<String>karuListe = new ArrayList<String>() ;
+	private ArrayList<String>karuListe = new ArrayList<String>() ;
+	
 	/**
 	 *  Ein Array was die Zugreihenfolge angibt an der sich die ziehen Methode entlanghangelt
 	 */
-	private String[] zugReihenfolge = new String[] {"0#6","0#5","0#4","0#3","0#2","0#1","0#0","1#0","1#1","1#2","1#3","1#4","1#5","1#6"};
+	public static String[] zugReihenfolge = new String[] {"0#6","0#5","0#4","0#3","0#2","0#1","0#0","1#0","1#1","1#2","1#3","1#4","1#5","1#6"};
 
 	Spielfeld() {
 		spielfeld = new int[2][7];
@@ -29,6 +30,12 @@ public class Spielfeld {
 		if(spielfeld[reihe][spalte]==0)return false;
 		return true;
 	}
+	
+	public ArrayList<String> getKaruListe(){
+		return this.karuListe;
+	}
+	
+	
 	@Override
 	public String toString() {
 		return 	"-----------------------------------\n"
@@ -39,6 +46,15 @@ public class Spielfeld {
 				+"-----------------------------------";
 		
 	}
+	
+	public int[][] getSpielfeld(){
+		return this.spielfeld;
+	}
+	
+	public void setSpielfeld(int[][]sf) {
+		this.spielfeld=sf;
+	}
+	
 	/**
 	 * zieht die Steine vom angegebenem Feld und ruft sich so lange selbst wieder auf
 	 * bis das Feld, welches nach dem Feld kommt in dem die letzte Kugel eingelegt wurde, leer ist
@@ -75,7 +91,7 @@ public class Spielfeld {
 				System.out.println(this.toString());
 			}
 			else if(input.equalsIgnoreCase("karu")) {
-				if(this.karu() !=true) System.out.println("Es gibt kein Karu zu beanspruchen.");
+				if(this.karuCheck() !=true) System.out.println("Es gibt kein Karu zu beanspruchen.");
 				else {
 					boolean bedingung = false;
 					do {
@@ -130,7 +146,7 @@ public class Spielfeld {
 		System.out.println("Drücke ENTER zum fortfahren oder geben Sie KARU ein um ein Karu anzugeben.");
 		input = sc.nextLine();
 		if(input.equalsIgnoreCase("karu")) {
-			if(this.karu() !=true) System.out.println("Es gibt kein Karu zu beanspruchen.");
+			if(this.karuCheck() !=true) System.out.println("Es gibt kein Karu zu beanspruchen.");
 			else {
 				boolean bedingung = false;
 				do {
@@ -195,7 +211,7 @@ public class Spielfeld {
 	 * @param spalte Ist die Spalte des übergebenen Spielfeldes
 	 * @return ist die Position im Array
 	 */
-	private int zugReihenfolgenPlatzierung(int reihe, int spalte){
+	public int zugReihenfolgenPlatzierung(int reihe, int spalte){
 		int zaehler = 0;
 		for(String speicher : zugReihenfolge) {
 			String[] array = speicher.split("#");
@@ -216,7 +232,7 @@ public class Spielfeld {
 	 * @param spalte gibt die Spalte der betroffenen Mulden an
 	 * @param akt ist der Spieler der aktuell am Zug ist
 	 */
-	private void removeStones(int spalte, Spieler akt) {
+	public void removeStones(int spalte, Spieler akt) {
 		int punkte;
 		punkte = spielfeld[0][spalte];
 		punkte += spielfeld[1][spalte];
@@ -225,7 +241,7 @@ public class Spielfeld {
 		akt.addSteine(punkte);
 	}
 
-	private boolean nextNotZero(int reihe, int spalte) {
+	public boolean nextNotZero(int reihe, int spalte) {
 		boolean nextNotZero = false;
 		if (reihe == 0) {
 			if (spalte != 0) {
@@ -278,7 +294,7 @@ public class Spielfeld {
 		
 	}
 	
-	private boolean karu() {
+	public boolean karuCheck() {
 		boolean karu = false;
 		for(int i = 0; i<2;i++) {
 			for(int j=0;j<7;j++) {

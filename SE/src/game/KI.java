@@ -13,6 +13,8 @@ public class KI extends Spieler{
 	public void setSchwer(boolean schwer) {
 		this.schwer = schwer;
 	}
+	
+	
 
 	
 	

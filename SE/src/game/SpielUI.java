@@ -143,7 +143,7 @@ public class SpielUI {
 							else System.out.println(" Bitte waehlen Sie ein Feld aus, was nicht leer ist.");
 							 spalte = Integer.parseInt(sc.nextLine())-1;
 						}
-						sp.ziehe(sp.gibSpieler(), spalte,sc);
+						sp.ziehe(sp.gibSpieler(), spalte, sp.gibSpieler().getReihe(),sc);
 						
 						}catch(NumberFormatException ex) {
 							System.out.println("Bitte geben Sie eine Spalte von 1-7 an");
