@@ -110,14 +110,14 @@ public class SpielUI {
 				boolean spielerwechsel = false;
 				sp.getStatus();
 				if (sp.gibSpieler().getName().contains("ki")) {
-					KI cp = (KI) sp.gibSpieler();
-					if (cp.isSchwer()) {
-						sp.zieheKISchwer(sp.aktSpieler);
-
-					} else {
-						int zufallszahl = (int) (Math.random() * 6);
-						sp.ziehe(sp.gibSpieler(), zufallszahl,sc);
-					}
+//					KI cp = (KI) sp.gibSpieler();
+//					if (cp.isSchwer()) {
+//						sp.zieheKISchwer(sp.aktSpieler);
+//
+//					} else {
+//						int zufallszahl = (int) (Math.random() * 6);
+//						sp.ziehe(sp.gibSpieler(), zufallszahl,sc);
+//					}
 				} else {
 					if (sp.aktSpieler.getAndererSpieler().getSteine() >= 36) {
 						System.out.println("Möchte "+sp.aktSpieler.getName()+" aufgeben? Bitte geben Sie JA oder NEIN ein.");
@@ -131,7 +131,7 @@ public class SpielUI {
 
 						}
 
-					else {
+					
 						System.out.println("Wählen Sie die gewünschte Spalte (1 bis 7) aus.");
 						try {
 							
@@ -149,7 +149,7 @@ public class SpielUI {
 							System.out.println("Bitte geben Sie eine Spalte von 1-7 an");
 							spielerwechsel = true;
 							}
-					}
+					
 				}
 				
 				game = !(sp.hatGewonnen());
