@@ -49,7 +49,8 @@ public class Spielfeld {
 	 * @param akt Der aktuelle Spieler, welcher den Zug macht
 	 */
 	public void ziehen(int reihe, int spalte, Spieler akt,Scanner sc) {
-		
+		int reiheEingabe=0;
+		int spalteEingabe=0;
 		int ziehSteine = spielfeld[reihe][spalte];
 		spielfeld[reihe][spalte]=0;
 		int platzierung = zugReihenfolgenPlatzierung(reihe,spalte);
@@ -62,6 +63,8 @@ public class Spielfeld {
 			if(platzierung==14)platzierung=0;
 			System.out.println("Drücke ENTER zum fortfahren oder geben Sie KARU ein um ein Karu anzugeben.");
 			input = sc.nextLine();
+			
+			
 			if(input.equals("")) {
 				String[] zwischenSpeicher = zugReihenfolge[platzierung].split("#");
 				reihe = Integer.parseInt(zwischenSpeicher[0]);
@@ -74,22 +77,41 @@ public class Spielfeld {
 			else if(input.equalsIgnoreCase("karu")) {
 				if(this.karu() !=true) System.out.println("Es gibt kein Karu zu beanspruchen.");
 				else {
+					boolean bedingung = false;
 					do {
-						System.out.println("Geben Sie die Reihe vom Feld mit dem Karu an");
-					}while(!sc.hasNextInt());
+						System.out.println("Geben Sie die Reihe vom Feld mit dem Karu an.");
+						try {
+							reiheEingabe = sc.nextInt()-1;
+							bedingung=true;
+						}catch(Exception e) {
+							System.out.println("Falsche Eingabe.");
+							sc.next();
+						}
+						
+					}while(!bedingung);
 					
-					int reiheEingabe = sc.nextInt()-1;
+					
 					
 					do {
-						System.out.println("Geben Sie die Spalte vom Feld mit dem Karu an");
-					}while(!sc.hasNextInt());
+						System.out.println("Geben Sie die Spalte vom Feld mit dem Karu an.");
+						try {
+							spalteEingabe = sc.nextInt()-1;
+							bedingung=false;
+						}catch(Exception e) {
+							System.out.println("Falsche Eingabe.");
+							sc.next();
+						}
+					}while(bedingung);
 					
-					int spalteEingabe = sc.nextInt()-1;
+					
 					
 					if(karuListe.contains(reiheEingabe+"#"+spalteEingabe)) {
 						System.out.print("Eingabe korrekt\n");
 						akt.getSpielerVonListe(reiheEingabe).addSteine(this.spielfeld[reiheEingabe][spalteEingabe]);
 						this.spielfeld[reiheEingabe][spalteEingabe]=0;
+					}
+					else {
+						System.out.println("Falsche Eingabe, in diesem Feld gibt es kein Karu. Der naechste Zug wird ausgefuehrt\n");
 					}
 					String[] zwischenSpeicher = zugReihenfolge[platzierung].split("#");
 					reihe = Integer.parseInt(zwischenSpeicher[0]);
@@ -110,18 +132,39 @@ public class Spielfeld {
 		if(input.equalsIgnoreCase("karu")) {
 			if(this.karu() !=true) System.out.println("Es gibt kein Karu zu beanspruchen.");
 			else {
+				boolean bedingung = false;
 				do {
-				System.out.println("Geben Sie die Reihe vom Feld mit dem Karu an");
-				}while(!sc.hasNextInt());
-				int reiheEingabe = sc.nextInt()-1;
+					System.out.println("Geben Sie die Reihe vom Feld mit dem Karu an.");
+					try {
+						reiheEingabe = sc.nextInt()-1;
+						bedingung=true;
+					}catch(Exception e) {
+						System.out.println("Falsche Eingabe.");
+						sc.next();
+					}
+					
+				}while(!bedingung);
+				
+				
+				
 				do {
-				System.out.println("Geben Sie die Spalte vom Feld mit dem Karu an");
-				}while(!sc.hasNextInt());
-				int spalteEingabe = sc.nextInt()-1;
+					System.out.println("Geben Sie die Spalte vom Feld mit dem Karu an.");
+					try {
+						spalteEingabe = sc.nextInt()-1;
+						bedingung=false;
+					}catch(Exception e) {
+						System.out.println("Falsche Eingabe.");
+						sc.next();
+					}
+				}while(bedingung);
+				
 				if(karuListe.contains(reiheEingabe+"#"+spalteEingabe)) {
 					System.out.print("Eingabe korrekt\n");
 					akt.getSpielerVonListe(reiheEingabe).addSteine(this.spielfeld[reiheEingabe][spalteEingabe]);
 					this.spielfeld[reiheEingabe][spalteEingabe]=0;
+				}
+				else {
+					System.out.println("Falsche Eingabe, in diesem Feld gibt es kein Karu. Der naechste Zug wird ausgefuehrt\n");
 				}
 			}
 		}
