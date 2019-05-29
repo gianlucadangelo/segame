@@ -119,19 +119,19 @@ public class SpielUI {
 						sp.ziehe(sp.gibSpieler(), zufallszahl,sc);
 					}
 				} else {
-					if (sp.aktSpieler.getSteine() >= 36) {
-						System.out.println("Möchtest du aufgeben? J/N ");
-						if (sc.nextLine().toLowerCase().equals("j")) {
-							for (Spieler spieler : sp.spielerListe) {
-								if (!(spieler.getName().equals(sp.aktSpieler.getName()))) {
-									System.out.println("Spiel wird beendet. " + spieler + " hat gewonnen.");
-									sc.close();
-								}
+					if (sp.aktSpieler.getAndererSpieler().getSteine() >= 36) {
+						System.out.println("Möchte "+sp.aktSpieler.getName()+" aufgeben? Bitte geben Sie JA oder NEIN ein.");
+						if (sc.nextLine().toLowerCase().equals("ja")) {
+							System.out.println("Herzlichen Glückwunsch. " + sp.aktSpieler.getAndererSpieler().getName() + " hat gewonnen.\n");
+							System.out.println("Spiel wird beendet.");
+							
+							sc.close();
+							break;
 							}
 
 						}
 
-					}else {
+					else {
 						System.out.println("Wählen Sie die gewünschte Spalte (1 bis 7) aus.");
 						try {
 							
