@@ -130,32 +130,50 @@ public class SpielUI {
 							}
 
 						}
-
-					
+					boolean weiter= true;
+					int spalte=0;
+					String s="";
+					do {
 						System.out.println("Wählen Sie die gewünschte Spalte (1 bis 7) aus.");
-						try {
-							
-							int spalte = Integer.parseInt(sc.nextLine())-1;
+						s= sc.nextLine();
 						
-						
-						while( (spalte < 0 || spalte > 6) || (sp.sf.fieldNotEmpty(sp.gibSpieler().getReihe() ,spalte)!=true) ) {
-							if(spalte > 6 || spalte < 0) System.out.println("Bitte geben Sie eine Spalte von 1-7 an");
-							else System.out.println(" Bitte waehlen Sie ein Feld aus, was nicht leer ist.");
-							 spalte = Integer.parseInt(sc.nextLine())-1;
+						switch(s) {
+						case "1": spalte=0;weiter=true;break;
+						case "2": spalte=1;weiter=true;break;
+						case "3": spalte=2;weiter=true;break;
+						case "4": spalte=3;weiter=true;break;
+						case "5": spalte=4;weiter=true;break;
+						case "6": spalte=5;weiter=true;break;
+						case "7": spalte=6;weiter=true;break;
+						default: weiter=false;System.out.println("Fehlerhafte eingabe");break;
 						}
-						sp.ziehe(sp.gibSpieler(), spalte, sp.gibSpieler().getReihe(),sc);
 						
-						}catch(NumberFormatException ex) {
-							System.out.println("Bitte geben Sie eine Spalte von 1-7 an");
-							spielerwechsel = true;
-							}
+					}while(!weiter);
+					sp.ziehe(sp.gibSpieler(), spalte, sp.gibSpieler().getReihe(),sc);
+						
+//						try {
+//							
+//							int spalte = Integer.parseInt(sc.nextLine())-1;
+//						
+//						
+//						while( (spalte < 0 || spalte > 6) || (sp.sf.fieldNotEmpty(sp.gibSpieler().getReihe() ,spalte)!=true) ) {
+//							if(spalte > 6 || spalte < 0) System.out.println("Bitte geben Sie eine Spalte von 1-7 an");
+//							else System.out.println(" Bitte waehlen Sie ein Feld aus, was nicht leer ist.");
+//							 spalte = Integer.parseInt(sc.nextLine())-1;
+//						}
+//						sp.ziehe(sp.gibSpieler(), spalte, sp.gibSpieler().getReihe(),sc);
+//						
+//						}catch(NumberFormatException ex) {
+//							System.out.println("Bitte geben Sie eine Spalte von 1-7 an");
+//							spielerwechsel = true;
+//							}
 					
 				}
 				
 				game = !(sp.hatGewonnen());
 				if (game) {
-					sp.getStatus();
 					if(!spielerwechsel)
+					sp.getStatus();
 					sp.changeSpieler();
 				} else {
 					System.out.println("Spiel wird beendet");

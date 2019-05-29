@@ -358,7 +358,8 @@ public class Spiel {
 	
 	public void start() {
 		sf = new Spielfeld();
-		aktSpieler = spielerListe[0];
+		int zufall = (int)((Math.random()) * 2 );
+		aktSpieler = spielerListe[zufall];
 	}
 
 	public static void addSpieler(Spieler name) {
