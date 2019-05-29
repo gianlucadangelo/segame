@@ -1,5 +1,4 @@
 package game;
-
 public class KI extends Spieler{
 
 	private boolean schwer;
@@ -7,12 +6,13 @@ public class KI extends Spieler{
 		super(name, steine, reihe);
 		this.setSchwer(mode);
 	}
-	public boolean isSchwer() {
+	public boolean getSchwer() {
 		return schwer;
 	}
 	public void setSchwer(boolean schwer) {
 		this.schwer = schwer;
 	}
+	
 	
 	
 
