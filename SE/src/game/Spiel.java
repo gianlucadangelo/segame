@@ -1,10 +1,12 @@
 package game;
 import java.util.Scanner;
 import java.util.Random;
-public class Spiel {
+	public class Spiel {
 	public static Spieler[] spielerListe;
 	public static int spielercounter = 0;
-	Spieler aktSpieler;
+	private	Spieler aktSpieler;
+	private KI aktKI;
+	
 	Spielfeld sf;
 
 	Spiel() {
@@ -377,6 +379,10 @@ public class Spiel {
 	}
 
 	public Spieler gibSpieler() {
+		return this.aktSpieler;
+	}
+	
+	public KI gibKi() {
 		return this.aktSpieler;
 	}
 

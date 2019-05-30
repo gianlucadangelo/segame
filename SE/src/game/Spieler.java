@@ -17,6 +17,7 @@ abstract class Spieler {
 	public int getReihe() {
 		return reihe;
 	}
+
 	
 	public Spieler getAndererSpieler() {
 		for(Spieler a : liste) {

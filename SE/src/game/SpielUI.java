@@ -45,11 +45,11 @@ public class SpielUI {
 				boolean korrekt = false;
 				do {
 					if (mode.toLowerCase().equals("schwer")) {
-						KI cpS = new KI("1#" + spieler1, 0, 0, true);
+						KI cpS = new KI(spieler1, 0, 0, true);
 						Spiel.addSpieler(cpS);
 						korrekt = true;
 					} else if (mode.toLowerCase().equals("normal")) {
-						KI cp = new KI("1#" + spieler1, 0, 0, false);
+						KI cp = new KI(spieler1, 0, 0, false);
 						Spiel.addSpieler(cp);
 						korrekt = true;
 					} else {
@@ -109,20 +109,15 @@ public class SpielUI {
 			while (game) {
 				boolean spielerwechsel = false;
 				sp.getStatus();
-				if (sp.gibSpieler().getName().contains("ki")) {
-//					KI cp = (KI) sp.gibSpieler();
-//					if (cp.isSchwer()) {
-//						sp.zieheKISchwer(sp.aktSpieler);
-//
-//					} else {
-//						int zufallszahl = (int) (Math.random() * 6);
-//						sp.ziehe(sp.gibSpieler(), zufallszahl,sc);
-//					}
+				if (sp.gibSpieler().getName().equalsIgnoreCase("ki")) {
+					KI speicher = (KI) sp.gibSpieler();
+					sp.zieheKI(sp.gibSpieler(), sp.zugBerechnen(speicher), sp.gibSpieler().getReihe(),sc,speicher.getSchwer());
+					
 				} else {
-					if (sp.aktSpieler.getAndererSpieler().getSteine() >= 36) {
-						System.out.println("Möchte "+sp.aktSpieler.getName()+" aufgeben? Bitte geben Sie JA oder NEIN ein.");
+					if (sp.gibSpieler().getAndererSpieler().getSteine() >= 36) {
+						System.out.println("Möchte "+sp.gibSpieler().getName()+" aufgeben? Bitte geben Sie JA oder NEIN ein.");
 						if (sc.nextLine().toLowerCase().equals("ja")) {
-							System.out.println("Herzlichen Glückwunsch. " + sp.aktSpieler.getAndererSpieler().getName() + " hat gewonnen.\n");
+							System.out.println("Herzlichen Glückwunsch. " + sp.gibSpieler().getAndererSpieler().getName() + " hat gewonnen.\n");
 							System.out.println("Spiel wird beendet.");
 							
 							sc.close();
