@@ -38,29 +38,31 @@ public class SpielUI {
 			
 			Spiel sp = new Spiel();
 
-			if (spieler1.toLowerCase().equals("ki")) {
-				System.out.println("Auswahl Schwierigkeitsgrad für " +spieler1 + ":" + "\n"
-						+ "Bitte normal bzw. schwer eingeben.");
-				String mode = sc.nextLine();
-				boolean korrekt = false;
-				do {
+			start: while (true) {
+				if (spieler1.toLowerCase().equals("ki")) {
+					System.out.println("Auswahl Schwierigkeitsgrad für " +spieler1 + ":" + "\n"
+							+ "Bitte normal bzw. schwer eingeben.");
+
+					String mode = sc.nextLine();
+
 					if (mode.toLowerCase().equals("schwer")) {
 						KI cpS = new KI(spieler1, 0, 0, true);
 						Spiel.addSpieler(cpS);
-						korrekt = true;
+						break;
 					} else if (mode.toLowerCase().equals("normal")) {
 						KI cp = new KI(spieler1, 0, 0, false);
 						Spiel.addSpieler(cp);
-						korrekt = true;
+						break;
 					} else {
-						System.out.println("falsche Eingabe, bitte normal oder schwer eingeben.");
-
+						System.out.println("Falsche Eingabe!");
+						continue start;
 					}
-				} while (!korrekt);
 
-			} else {
-				Mensch mensch = new Mensch(spieler1, 0,0);
-				Spiel.addSpieler(mensch);
+				} else {
+					Mensch mensch = new Mensch(spieler1, 0,0);
+					Spiel.addSpieler(mensch);
+					break;
+				}
 			}
 			
 			System.out.println("Name für Spieler 2 eingeben. Falls KI gewünscht, bitte KI eingeben.");
@@ -80,31 +82,32 @@ public class SpielUI {
 			
 			
 			
-			if (spieler2.toLowerCase().equals("ki")) {
-				System.out.println("Auswahl Schwierigkeitsgrad für " + spieler2 + ":" + "\n"
-						+ "Bitte normal bzw. schwer eingeben.");
-				String mode = sc.nextLine();
-				boolean korrekt = false;
-				do {
-					if (mode.toLowerCase().equals("schwer")) {
-						KI cpS = new KI(spieler2, 1, 0, true);
-						Spiel.addSpieler(cpS);
-						korrekt = true;
-					} else if (mode.toLowerCase().equals("normal")) {
-						KI cp = new KI(spieler2, 1, 0, false);
-						Spiel.addSpieler(cp);
-						korrekt = true;
-					} else {
-						System.out.println("falsche Eingabe, bitte erneut versuchen.");
+			start2: while(true) {
+				if (spieler2.toLowerCase().equals("ki")) {
+					System.out.println("Auswahl Schwierigkeitsgrad für " + spieler2 + ":" + "\n"
+							+ "Bitte normal bzw. schwer eingeben.");
+					String mode = sc.nextLine();
+		
+						if (mode.toLowerCase().equals("schwer")) {
+							KI cpS = new KI(spieler2, 0, 1, true);
+							Spiel.addSpieler(cpS);
+							break;
+						} else if (mode.toLowerCase().equals("normal")) {
+							KI cp = new KI(spieler2, 0, 1, false);
+							Spiel.addSpieler(cp);
+							break;
+						} else {
+							System.out.println("Falsche Eingabe!");
+							continue start2;
+						}
 
-					}
-				} while (!korrekt);
-
-			} else {
-				Mensch mensch = new Mensch(spieler2, 0,1);
-				Spiel.addSpieler(mensch);
-
+				} else {
+					Mensch mensch = new Mensch(spieler2, 0,1);
+					Spiel.addSpieler(mensch);
+					break;
+				}
 			}
+			
 			sp.start();
 			while (game) {
 				boolean spielerwechsel = false;
