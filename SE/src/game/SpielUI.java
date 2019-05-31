@@ -129,7 +129,7 @@ public class SpielUI {
 
 						}
 					boolean weiter= true;
-					int spalte=0;
+					int spalte=-1;
 					String s="";
 					do {
 						System.out.println("Wählen Sie die gewünschte Spalte (1 bis 7) aus.");
@@ -143,7 +143,11 @@ public class SpielUI {
 						case "5": spalte=4;weiter=true;break;
 						case "6": spalte=5;weiter=true;break;
 						case "7": spalte=6;weiter=true;break;
-						default: weiter=false;System.out.println("Fehlerhafte eingabe");break;
+						default: weiter=false;System.out.println("Fehlerhafte Eingabe");break;
+						}
+						if((sp.sf.fieldNotEmpty(sp.gibSpieler().getReihe() ,spalte)!=true)&&spalte!=-1) {
+							weiter=false;
+							System.out.println("Feld darf nicht leer sein. Bitte gültiges Feld eingeben");
 						}
 						
 					}while(!weiter);
