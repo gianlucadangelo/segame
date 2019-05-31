@@ -28,6 +28,17 @@ import java.util.Random;
 		int reiheKaru=akt.getReihe();
 		int spalteKaru=0;
 		String spielerKaru="";
+		
+		boolean istKi = false;
+		boolean schwer = false;
+		if(akt.getAndererSpieler().getName().equalsIgnoreCase("ki")) {
+			KI kiGegner= (KI) akt.getAndererSpieler();
+			istKi = true;
+			schwer = kiGegner.getSchwer();
+		}
+	
+		
+		boolean karuNehmen = true;
 		int[][] spielfeld = sf.getSpielfeld();
 		int ziehSteine = spielfeld[reihe][spalte];
 		spielfeld[reihe][spalte]=0;
@@ -36,6 +47,17 @@ import java.util.Random;
 		if(platzierung==13)platzierung=0;
 		else platzierung++;
 		String input;
+		
+		
+		//Falls der andere Spieler eine KI ist so wird ueberprueft ob es sich um eine schwere oder normale Ki handelt.
+		//Die schwere KI nimmt immer ein Karu auf waehrend die normale zufaellig karus auswaehlt
+		if(istKi) {
+			if(!schwer) {
+				Random zufall = new Random();
+				karuNehmen = zufall.nextBoolean();
+			}
+		}
+		
 		//Diese Schleife wiederholt sich so oft wieviele Steine platziert werden muessen und geht die Eintraege des Arrays
 		//Zugreihenfolge durch und lieﬂt daraus das n‰chste Feld aus
 		for(int i = 0; i<ziehSteine ; i++) {
@@ -53,7 +75,10 @@ import java.util.Random;
 //				else platzierung++;
 //				System.out.println(sf.toString());
 			while(input.equalsIgnoreCase("karu")) {
-				if(sf.karuCheck() !=true) System.out.println("Es gibt kein Karu zu beanspruchen.");
+				if(sf.karuCheck() !=true) {
+					System.out.println("Es gibt kein Karu zu beanspruchen.");
+					input=sc.nextLine();
+				}
 				else {
 					boolean bedingung = true;
 					if(!(akt.getAndererSpieler().getName().equalsIgnoreCase("ki")) ) {
@@ -103,9 +128,25 @@ import java.util.Random;
 					else {
 						System.out.println("Falsche Eingabe, in diesem Feld gibt es kein Karu. Der naechste Zug wird ausgefuehrt\n");
 					}
+					if(istKi) {
+						if(karuNehmen) {
+							if(sf.karuCheck()) {
+								for(int a = 0; a<7;a++) {
+									if(sf.getKaruListe().contains(akt.getReihe()+"#"+a)) {
+										System.out.println("KI nimmt Karu.");
+										akt.addSteine(spielfeld[akt.getReihe()][a]);
+										spielfeld[akt.getReihe()][a]=0;
+									}
+								}
+									
+							
+						}
+					}
 					
 				}
 				
+			}
+			
 			}
 			String[] zwischenSpeicher = sf.zugReihenfolge[platzierung].split("#");
 			reihe = Integer.parseInt(zwischenSpeicher[0]);
@@ -114,52 +155,10 @@ import java.util.Random;
 			if(platzierung==13)platzierung=0;
 			else platzierung++;
 			System.out.println(sf.toString());
-		
 		}
 		//falls das n‰chste Feld nicht leer ist, wird ziehen rekursiv wieder aufgerufen mit der Position des
 		//n‰chsten Feldes
-//		System.out.println("Dr¸cke ENTER zum fortfahren oder geben Sie KARU ein um ein Karu anzugeben.");
-//		input = sc.nextLine();
-//		if(input.equalsIgnoreCase("karu")) {
-//			if(sf.karuCheck() !=true) System.out.println("Es gibt kein Karu zu beanspruchen.");
-//			else {
-//				boolean bedingung = false;
-//				do {
-//					System.out.println("Geben Sie die Reihe vom Feld mit dem Karu an.");
-//					try {
-//						reiheEingabe = sc.nextInt()-1;
-//						bedingung=true;
-//					}catch(Exception e) {
-//						System.out.println("Falsche Eingabe.");
-//						sc.next();
-//					}
-//					
-//				}while(!bedingung);
-//				
-//				
-//				
-//				do {
-//					System.out.println("Geben Sie die Spalte vom Feld mit dem Karu an.");
-//					try {
-//						spalteEingabe = sc.nextInt()-1;
-//						bedingung=false;
-//					}catch(Exception e) {
-//						System.out.println("Falsche Eingabe.");
-//						sc.next();
-//					}
-//				}while(bedingung);
-//				
-//				if(sf.getKaruListe().contains(reiheEingabe+"#"+spalteEingabe)) {
-//					System.out.print("Eingabe korrekt\n");
-//					akt.getSpielerVonListe(reiheEingabe).addSteine(spielfeld[reiheEingabe][spalteEingabe]);
-//					spielfeld[reiheEingabe][spalteEingabe]=0;
-//				}
-//				else {
-//					System.out.println("Falsche Eingabe, in diesem Feld gibt es kein Karu. Der naechste Zug wird ausgefuehrt\n");
-//				}
-//			}
-//		}
-		//System.out.println(sf.toString());
+
 		if(sf.nextNotZero(reihe,spalte)) {
 			String[]zwischenSpeicher = sf.zugReihenfolge[platzierung].split("#");
 			reihe = Integer.parseInt(zwischenSpeicher[0]);
@@ -180,9 +179,10 @@ import java.util.Random;
 	
 
 
-	public void zieheKI(Spieler akt,int spalte, int reihe, Scanner sc,boolean schwer) {
+	public void zieheKI(KI akt, int reihe, Scanner sc,boolean schwer) {
 		String input="";
 		int reiheKaru = akt.getAndererSpieler().getReihe();
+		int spalte = this.zugBerechnen(akt);
 		int spalteKaru=0;
 		boolean karuNehmen;
 		Random zufall = new Random();
@@ -210,16 +210,16 @@ import java.util.Random;
 			input = sc.nextLine();
 			
 			
-			if(input.equals("")) {
-				String[] zwischenSpeicher = sf.zugReihenfolge[platzierung].split("#");
-				reihe = Integer.parseInt(zwischenSpeicher[0]);
-				spalte = Integer.parseInt(zwischenSpeicher[1]);
-				spielfeld[reihe][spalte]++;
-				if(platzierung==13)platzierung=0;
-				else platzierung++;
-				System.out.println(sf.toString());
-			}
-			else if(input.equalsIgnoreCase("karu")) {
+		//	if(input.equals("")) {
+//				String[] zwischenSpeicher = sf.zugReihenfolge[platzierung].split("#");
+//				reihe = Integer.parseInt(zwischenSpeicher[0]);
+//				spalte = Integer.parseInt(zwischenSpeicher[1]);
+//				spielfeld[reihe][spalte]++;
+//				if(platzierung==13)platzierung=0;
+//				else platzierung++;
+//				System.out.println(sf.toString());
+		//	}
+			if(input.equalsIgnoreCase("karu")) {
 				if(sf.karuCheck() !=true) System.out.println("Es gibt kein Karu zu beanspruchen.");
 				else {
 					boolean bedingung = false;
@@ -245,32 +245,40 @@ import java.util.Random;
 					else {
 						System.out.println("Falsche Eingabe, in diesem Feld gibt es kein Karu. Der naechste Zug wird ausgefuehrt\n");
 					}
-					
-					if(karuNehmen) {
-						if(sf.karuCheck()) {
-							for(int a = 0; a<7;a++) {
-								if(sf.getKaruListe().contains(akt.getReihe()+"#"+a)) {
-									System.out.println("KI nimmt Karu.");
-									int[][]array = sf.getSpielfeld();
-									akt.addSteine(spielfeld[akt.getReihe()][a]);
-									spielfeld[akt.getReihe()][a]=0;
-								}
-							}
-								
-						}
-					}
-					
-					String[] zwischenSpeicher = sf.zugReihenfolge[platzierung].split("#");
-					reihe = Integer.parseInt(zwischenSpeicher[0]);
-					spalte = Integer.parseInt(zwischenSpeicher[1]);
-					spielfeld[reihe][spalte]++;
-					if(platzierung==13)platzierung=0;
-					else platzierung++;
-					System.out.println(sf.toString());
 				}
 				
+				String[] zwischenSpeicher = sf.zugReihenfolge[platzierung].split("#");
+				reihe = Integer.parseInt(zwischenSpeicher[0]);
+				spalte = Integer.parseInt(zwischenSpeicher[1]);
+				spielfeld[reihe][spalte]++;
+				if(platzierung==13)platzierung=0;
+				else platzierung++;
+				System.out.println(sf.toString());
 			}
-		
+					
+				if(karuNehmen) {
+					if(sf.karuCheck()) {
+						for(int a = 0; a<7;a++) {
+							if(sf.getKaruListe().contains(akt.getReihe()+"#"+a)) {
+								System.out.println("KI nimmt Karu.");
+								akt.addSteine(spielfeld[akt.getReihe()][a]);
+								spielfeld[akt.getReihe()][a]=0;
+							}
+						}
+					}			
+					
+				}
+				
+					
+				
+			
+			String[] zwischenSpeicher = sf.zugReihenfolge[platzierung].split("#");
+			reihe = Integer.parseInt(zwischenSpeicher[0]);
+			spalte = Integer.parseInt(zwischenSpeicher[1]);
+			spielfeld[reihe][spalte]++;
+			if(platzierung==13)platzierung=0;
+			else platzierung++;
+			System.out.println(sf.toString());
 		}
 		if(sf.nextNotZero(reihe,spalte)) {
 			String[]zwischenSpeicher = sf.zugReihenfolge[platzierung].split("#");
@@ -290,27 +298,27 @@ import java.util.Random;
 		
 	}
 	
-	private int ziehenSimulation(Spieler akt,int reihe, int spalte) {
+	private int ziehenSimulation(Spieler akt,int reihe, int spalte,Spielfeld clone) {
 		int ergebnis = 0;
-		int[][] spielfeld = sf.getSpielfeld();
+		int[][] spielfeld = clone.getSpielfeld();
 		int ziehSteine = spielfeld[reihe][spalte];
 		spielfeld[reihe][spalte]=0;
-		int platzierung = sf.zugReihenfolgenPlatzierung(reihe,spalte);
+		int platzierung = clone.zugReihenfolgenPlatzierung(reihe,spalte);
 		if(platzierung==13)platzierung=0;
 		else platzierung++;
 		for(int i = 0;i<ziehSteine;i++) {
 			
-			if(sf.karuCheck()) {
+			if(clone.karuCheck()) {
 				for(int a = 0; a<7;a++) {
-					if(sf.getKaruListe().contains(akt.getReihe()+"#"+a)) {
-						int[][]array = sf.getSpielfeld();
+					if(clone.getKaruListe().contains(akt.getReihe()+"#"+a)) {
+//						int[][]array = sf.getSpielfeld();
 						ergebnis+=(spielfeld[akt.getReihe()][a]);
 						spielfeld[akt.getReihe()][a]=0;
 					}
 				}
 			}
 
-			String[] zwischenSpeicher = sf.zugReihenfolge[platzierung].split("#");
+			String[] zwischenSpeicher = clone.zugReihenfolge[platzierung].split("#");
 			reihe = Integer.parseInt(zwischenSpeicher[0]);
 			spalte = Integer.parseInt(zwischenSpeicher[1]);
 			spielfeld[reihe][spalte]++;
@@ -318,17 +326,17 @@ import java.util.Random;
 			else platzierung++;
 			
 		}
-		if(sf.nextNotZero(reihe,spalte)) {
-			String[]zwischenSpeicher = sf.zugReihenfolge[platzierung].split("#");
+		if(clone.nextNotZero(reihe,spalte)) {
+			String[]zwischenSpeicher = clone.zugReihenfolge[platzierung].split("#");
 			reihe = Integer.parseInt(zwischenSpeicher[0]);
 			spalte = Integer.parseInt(zwischenSpeicher[1]);
-			ziehenSimulation(akt,reihe,spalte);
+			ergebnis += ziehenSimulation(akt,reihe,spalte,clone);
 		}	
 		//Falls das n‰chste Feld leer ist, wird removeStones mit der Position des ¸bern‰chsten Feldes aufgerufen
 		else {
 			if(platzierung == 13)platzierung = 0;
 			else platzierung++;
-			String[]zwischenSpeicher = sf.zugReihenfolge[platzierung].split("#");
+			String[]zwischenSpeicher = clone.zugReihenfolge[platzierung].split("#");
 			reihe = Integer.parseInt(zwischenSpeicher[0]);
 			spalte = Integer.parseInt(zwischenSpeicher[1]);
 			ergebnis+= spielfeld[0][spalte];
@@ -339,20 +347,30 @@ import java.util.Random;
 	
 	public int zugBerechnen(KI ki) {
 		int zug=0;
+	
 		int[]zuege= new int[7];
 		if(!ki.getSchwer()) {
 			Random zufall = new Random();
 			zug = zufall.nextInt(7);
+			int speicherArray[][] = sf.getSpielfeld();
+			while(speicherArray[ki.getReihe()][zug]==0) {
+				zug=zufall.nextInt(7);
+			}
 		}
 		else{
 			for(int i = 0;i<7;i++) {
-				Spiel clone = this;
-				zuege[i]=clone.ziehenSimulation(ki,ki.getReihe(),i);
+				int[][]copy = sf.getSpielfeldCopy();
+				Spielfeld clone = new Spielfeld(copy);
+				zuege[i]=ziehenSimulation(ki,ki.getReihe(),i,clone);
 			}
+			int zaehler =0;
+			int meistenPunkte=0;
 			for(int punkte : zuege) {
-				if(punkte>zug) {
-					zug=punkte;
+				if(punkte>meistenPunkte) {
+					zug=zaehler;
+					meistenPunkte=punkte;
 				}
+				zaehler++;
 			}
 		}
 		return zug;
@@ -382,9 +400,7 @@ import java.util.Random;
 		return this.aktSpieler;
 	}
 	
-	public KI gibKi() {
-		return this.aktSpieler;
-	}
+
 
 	public void changeSpieler() {
 		for (Spieler spieler : spielerListe) {

@@ -11,11 +11,15 @@ public class Spielfeld {
 	/**
 	 *  Ein Array was die Zugreihenfolge angibt an der sich die ziehen Methode entlanghangelt
 	 */
-	public static String[] zugReihenfolge = new String[] {"0#6","0#5","0#4","0#3","0#2","0#1","0#0","1#0","1#1","1#2","1#3","1#4","1#5","1#6"};
+	public String[] zugReihenfolge = new String[] {"0#6","0#5","0#4","0#3","0#2","0#1","0#0","1#0","1#1","1#2","1#3","1#4","1#5","1#6"};
 
 	Spielfeld() {
 		spielfeld = new int[2][7];
 		fillFields();
+	}
+	
+	Spielfeld(int[][] spielfeld){
+		this.spielfeld=spielfeld;
 	}
 
 	private void fillFields() {
@@ -34,6 +38,7 @@ public class Spielfeld {
 	public ArrayList<String> getKaruListe(){
 		return this.karuListe;
 	}
+	
 	
 	
 	@Override
@@ -306,5 +311,20 @@ public class Spielfeld {
 			}
 		}
 		return karu;
+	}
+	
+	public int[][] getSpielfeldCopy(){
+		int[][]copy = new int[2][7];
+		int zaehlerReihe=0;
+		int zaehlerSpalte=0;
+		for(int[]reihe:spielfeld) {
+			for(int spalte:reihe) {
+				copy[zaehlerReihe][zaehlerSpalte]=spalte;
+				zaehlerSpalte++;
+			}
+			zaehlerReihe++;
+			zaehlerSpalte=0;
+		}
+		return copy;
 	}
 }

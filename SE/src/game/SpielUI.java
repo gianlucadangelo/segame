@@ -111,7 +111,7 @@ public class SpielUI {
 				sp.getStatus();
 				if (sp.gibSpieler().getName().equalsIgnoreCase("ki")) {
 					KI speicher = (KI) sp.gibSpieler();
-					sp.zieheKI(sp.gibSpieler(), sp.zugBerechnen(speicher), sp.gibSpieler().getReihe(),sc,speicher.getSchwer());
+					sp.zieheKI(speicher, sp.gibSpieler().getReihe(),sc,speicher.getSchwer());
 					
 				} else {
 					if (sp.gibSpieler().getAndererSpieler().getSteine() >= 36) {
