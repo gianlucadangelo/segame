@@ -145,7 +145,7 @@ public class SpielUI {
 						case "7": spalte=6;weiter=true;break;
 						default: weiter=false;System.out.println("Fehlerhafte Eingabe");break;
 						}
-						if((sp.sf.fieldNotEmpty(sp.gibSpieler().getReihe() ,spalte)!=true)&&spalte!=-1) {
+						if(spalte!=-1&&(sp.sf.fieldNotEmpty(sp.gibSpieler().getReihe() ,spalte)!=true)) {
 							weiter=false;
 							System.out.println("Feld darf nicht leer sein. Bitte gültiges Feld eingeben");
 						}
