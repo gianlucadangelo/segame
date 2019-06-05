@@ -5,6 +5,7 @@ import java.util.Scanner;
 public class SpielUI {
 
 	public static void main(String[] arg) {
+		boolean aufgabe = false;
 		System.out.println("Willkommen. " + "\n" + "Hauptmenü:");
 		System.out.println("(1) Spiel starten");
 		System.out.println("(2) Spiel beenden");
@@ -117,9 +118,11 @@ public class SpielUI {
 					sp.zieheKI(speicher, sp.gibSpieler().getReihe(),sc,speicher.getSchwer());
 					
 				} else {
-					if (sp.gibSpieler().getAndererSpieler().getSteine() >= 36) {
+					if ( (sp.gibSpieler().getAndererSpieler().getSteine() >= 36) && (aufgabe == false) ) {
+						aufgabe = true;
 						System.out.println("Möchte "+sp.gibSpieler().getName()+" aufgeben? Bitte geben Sie JA oder NEIN ein.");
-						if (sc.nextLine().toLowerCase().equals("ja")) {
+						String input = sc.nextLine();
+						if (input.toLowerCase().equals("ja")) {
 							System.out.println("Herzlichen Glückwunsch. " + sp.gibSpieler().getAndererSpieler().getName() + " hat gewonnen.\n");
 							System.out.println("Spiel wird beendet.");
 							

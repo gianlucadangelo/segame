@@ -1,4 +1,4 @@
-package game;
+ package game;
 import java.util.Scanner;
 import java.util.ArrayList;
 public class Spielfeld {
@@ -39,6 +39,9 @@ public class Spielfeld {
 		return this.karuListe;
 	}
 	
+	public void karuAusListeEntfernen(int reihe, int feld) {
+		karuListe.remove(reihe+"#"+feld);
+	}
 	
 	
 	@Override
