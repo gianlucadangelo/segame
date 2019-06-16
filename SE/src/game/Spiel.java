@@ -443,7 +443,7 @@ import java.util.ArrayList;
 
 	public boolean hatGewonnen() {
 		boolean gewonnen = false;
-		if (sf.spielerLeisteLeer(aktSpieler)) {
+		if (sf.spielerLeisteLeer(aktSpieler) || sf.spielerLeisteLeer(aktSpieler.getAndererSpieler())) {
 			if (spielerListe[0].getSteine() < spielerListe[1].getSteine()) {
 				System.out.println(spielerListe[1].getName() + " hat gewonnen");
 				gewonnen = true;
